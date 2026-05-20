@@ -50,7 +50,12 @@ function parseCsv(csv: string): Stablecoin[] {
   const iCurrency  = col("currency");
   const iYield     = col("yield-bearing");
   const iYieldSrc  = col("yield source");
-  const iMarketCap = col("market cap");
+  // The sheet has TWO headers containing "market cap": "Above $100k Market
+  // Cap?" (a Yes/No column at I) and "Market Cap (USD)" (the real value at J).
+  // Prefer "market cap (usd)"; fall back to column J (index 9) if the parser
+  // can't find that exact header.
+  let iMarketCap = col("market cap (usd)");
+  if (iMarketCap < 0) iMarketCap = 9;
   const iChains    = col("chains");
   const iSource    = col("source");
 

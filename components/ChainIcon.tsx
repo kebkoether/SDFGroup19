@@ -74,7 +74,7 @@ const Polygon = ({ size }: IconProps) => (
   <Wrap bg="#8247E5" size={size} title="Polygon">
     <path
       fill="#FFF"
-      d="M21 12.5l-3-1.7-3 1.7v3.4l-3 1.7-3-1.7v-3.4l3-1.7v-2L8 10.8v4.4l4 2.3v3.4l4 2.3 4-2.3v-3.4l-3-1.7v-2l3-1.7v-2z"
+      d="M21.16 12.37l-2.59-1.5a.52.52 0 00-.52 0l-2.59 1.5-2.59 1.49a.52.52 0 00-.26.45v2.99l-2.08 1.2V15.3l4.67-2.7 4.67 2.7v2.99l-2.08-1.2v-2.99a.52.52 0 00-.26-.45zM16 11.12l2.08 1.2v2.99L16 14.1l-2.08 1.2v-2.99L16 11.12zm-4.67 8.78V17.1l2.08 1.2v2.81l-2.08-1.2zm4.67.98l-2.08-1.2v-2.99l2.08 1.2 2.08-1.2v2.99L16 20.88zm4.67-.98l-2.08 1.2v-2.81l2.08-1.2v2.81z"
     />
   </Wrap>
 );
@@ -91,11 +91,16 @@ const Base = ({ size }: IconProps) => (
 const BNBChain = ({ size }: IconProps) => (
   <Wrap bg="#F0B90B" size={size} title="BNB Chain">
     <g fill="#FFF">
-      <path d="M11.07 14.93L16 10l4.93 4.93-2.87 2.87L16 15.74l-2.06 2.06z" />
-      <path d="M9 16l2.07-2.07L13.14 16l-2.07 2.07z" />
-      <path d="M18.86 16l2.07-2.07L23 16l-2.07 2.07z" />
-      <path d="M11.07 17.07L16 22l4.93-4.93-2.87-2.87L16 16.26l-2.06-2.06z" />
-      <path d="M14.07 16L16 14.07 17.93 16 16 17.93z" />
+      {/* top */}
+      <path d="M13.5 9L16 6.5l2.5 2.5L16 11.5z" />
+      {/* left */}
+      <path d="M6.5 16L9 13.5l2.5 2.5L9 18.5z" />
+      {/* center */}
+      <path d="M13.5 16L16 13.5l2.5 2.5L16 18.5z" />
+      {/* right */}
+      <path d="M20.5 16L23 13.5l2.5 2.5L23 18.5z" />
+      {/* bottom */}
+      <path d="M13.5 23L16 20.5l2.5 2.5L16 25.5z" />
     </g>
   </Wrap>
 );
@@ -182,6 +187,51 @@ const LayerZero = ({ size }: IconProps) => (
   </Wrap>
 );
 
+const XRPLedger = ({ size }: IconProps) => (
+  <Wrap bg="#00AAE4" size={size} title="XRP Ledger">
+    <path
+      fill="#FFF"
+      d="M22.5 9h-3.2l-3.3 4.2L12.7 9H9.5l4.9 6.2-4.9 7.8h3.2l3.3-4.4 3.3 4.4h3.2l-4.9-7.8L22.5 9z"
+    />
+  </Wrap>
+);
+
+const XDC = ({ size }: IconProps) => (
+  <Wrap bg="#2157D3" size={size} title="XDC">
+    {/* Hexagon outline */}
+    <path
+      fill="none"
+      stroke="#FFF"
+      strokeWidth="2"
+      d="M16 8l6.93 4v8L16 24l-6.93-4v-8z"
+    />
+    {/* Inner chevrons suggesting the X */}
+    <path fill="#FFF" d="M12 13.5l4 2.5-4 2.5v-5zm8 0v5l-4-2.5 4-2.5z" />
+  </Wrap>
+);
+
+const Moonbeam = ({ size }: IconProps) => (
+  <Wrap bg="#E1147B" size={size} title="Moonbeam">
+    {/* Crescent moon */}
+    <path
+      fill="#FFF"
+      d="M21 12a8 8 0 01-10.39 7.59A9 9 0 1021 12z"
+    />
+  </Wrap>
+);
+
+const Gnosis = ({ size }: IconProps) => (
+  <Wrap bg="#04795B" size={size} title="Gnosis">
+    {/* Owl eyes */}
+    <circle cx="12.5" cy="15" r="3.2" fill="none" stroke="#FFF" strokeWidth="1.8" />
+    <circle cx="19.5" cy="15" r="3.2" fill="none" stroke="#FFF" strokeWidth="1.8" />
+    <circle cx="12.5" cy="15" r="1.4" fill="#FFF" />
+    <circle cx="19.5" cy="15" r="1.4" fill="#FFF" />
+    {/* Beak */}
+    <path fill="#FFF" d="M14.5 19.2h3l-1.5 2.3z" />
+  </Wrap>
+);
+
 // — Registry —
 
 const CHAIN_ICONS: Record<string, (p: IconProps) => React.ReactElement> = {
@@ -201,6 +251,11 @@ const CHAIN_ICONS: Record<string, (p: IconProps) => React.ReactElement> = {
   hedera: Hedera,
   zilliqa: Zilliqa,
   layerzero: LayerZero,
+  "xrp ledger": XRPLedger,
+  xrpl: XRPLedger,
+  xdc: XDC,
+  moonbeam: Moonbeam,
+  gnosis: Gnosis,
 };
 
 // Common aliases — map sheet-side variants to canonical keys.
@@ -214,6 +269,12 @@ const NAME_ALIASES: Record<string, string> = {
   "eth": "ethereum",
   "arbitrum one": "arbitrum",
   "trx": "tron",
+  "ripple": "xrp ledger",
+  "xrp": "xrp ledger",
+  "xdc network": "xdc",
+  "gnosis chain": "gnosis",
+  "xdai": "gnosis",
+  "moonbeam network": "moonbeam",
 };
 
 function normalize(name: string): string {

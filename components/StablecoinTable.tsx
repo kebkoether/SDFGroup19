@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ChainIcon } from "@/components/ChainIcon";
 import type { Stablecoin } from "@/lib/stablecoins";
@@ -143,13 +144,14 @@ export default function StablecoinTable({ rows }: { rows: Stablecoin[] }) {
               <th className="px-4 py-3 font-medium">Chains</th>
               <th className="px-4 py-3 text-right font-medium">Market Cap</th>
               <th className="px-4 py-3 text-right font-medium">30 Day Payment Volume</th>
+              <th className="px-2 py-3 font-medium sr-only">Detail</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--border)]">
             {filtered.length === 0 ? (
               <tr>
                 <td
-                  colSpan={7}
+                  colSpan={8}
                   className="px-4 py-8 text-center text-[var(--muted)]"
                 >
                   No stablecoins match &quot;{query}&quot;.
@@ -158,13 +160,19 @@ export default function StablecoinTable({ rows }: { rows: Stablecoin[] }) {
             ) : (
               filtered.map((coin) => {
                 const m = getMetrics(coin.symbol);
+                const href = `/coin/${encodeURIComponent(coin.symbol)}`;
                 return (
-                  <tr key={coin.symbol} className="hover:bg-white/[0.02]">
+                  <tr key={coin.symbol} className="group hover:bg-white/[0.02]">
                     <td className="w-12 px-3 py-4 text-right align-top font-mono text-xs text-[var(--muted)]">
                       {coin.rank}
                     </td>
                     <td className="px-4 py-4 align-top">
-                      <div className="font-semibold">{coin.symbol}</div>
+                      <Link
+                        href={href}
+                        className="font-semibold hover:text-[var(--accent)] transition-colors"
+                      >
+                        {coin.symbol}
+                      </Link>
                     </td>
                     <td className="px-4 py-4 align-top text-[var(--muted)]">
                       {coin.name}
@@ -188,6 +196,17 @@ export default function StablecoinTable({ rows }: { rows: Stablecoin[] }) {
                       }`}
                     >
                       {m.volume30dUsd ? formatUsd(m.volume30dUsd) : "-"}
+                    </td>
+                    <td className="px-2 py-4 align-top">
+                      <Link
+                        href={href}
+                        className="inline-flex items-center gap-1 rounded-lg border border-[var(--border)] px-2.5 py-1 text-xs text-[var(--muted)] opacity-0 transition-all group-hover:opacity-100 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                      >
+                        Details
+                        <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                          <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </Link>
                     </td>
                   </tr>
                 );

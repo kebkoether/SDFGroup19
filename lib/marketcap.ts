@@ -166,3 +166,39 @@ export const fetchAllMarketCaps = unstable_cache(
   ["market-caps"],
   { revalidate: 4 * 60 * 60 },
 );
+
+// Per-chain USD breakdown for a single coin — used by the detail page.
+async function computeCoinChainBreakdown(
+  symbol: string,
+): Promise<Record<string, number>> {
+  const chains = CONTRACT_ADDRESSES[symbol];
+  if (!chains) return {};
+
+  const rates = await withTimeout(fetchUsdRates(), 8000, {});
+  const currency = SYMBOL_CURRENCY[symbol] ?? "USD";
+  const fxRate = (rates as Record<string, number>)[currency] ?? 1;
+
+  const entries = await Promise.allSettled(
+    Object.entries(chains).map(async ([chain, address]) => {
+      const supply = await withTimeout(getChainSupply(chain, address), 8000, 0);
+      const usd = fxRate > 0 ? supply / fxRate : 0;
+      return [chain, usd] as const;
+    }),
+  );
+
+  return Object.fromEntries(
+    entries
+      .filter((r): r is PromiseFulfilledResult<readonly [string, number]> =>
+        r.status === "fulfilled",
+      )
+      .map((r) => r.value),
+  );
+}
+
+export function fetchCoinChainBreakdown(symbol: string) {
+  return unstable_cache(
+    () => computeCoinChainBreakdown(symbol),
+    [`chain-breakdown-${symbol}`],
+    { revalidate: 4 * 60 * 60 },
+  )();
+}
